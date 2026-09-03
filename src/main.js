@@ -28,9 +28,8 @@ gsap.ticker.add((time) => {
 gsap.ticker.lagSmoothing(0, 0);
 
 // ==========================================
-// INSTANT NAVBAR SCROLL SENSITIVE HIDE / SHOW & FROSTED GLASS
+// INSTANT NAVBAR SCROLL SENSITIVE HIDE / SHOW (Transparent Header)
 // ==========================================
-const mainHeader = document.getElementById('main-header');
 const navbarRightMenu = document.getElementById('navbar-right-menu');
 let lastScrollY = 0;
 const scrollThreshold = 10;
@@ -41,15 +40,6 @@ lenis.on('scroll', ({ scroll }) => {
 
   const currentScroll = Math.max(0, scroll);
   const scrollDelta = currentScroll - lastScrollY;
-
-  // Frosted glass background for header when scrolled past top
-  if (mainHeader) {
-    if (currentScroll > 30) {
-      mainHeader.classList.add('bg-[#EDE8D5]/90', 'backdrop-blur-md', 'shadow-sm', 'border-b', 'border-[#231F2A]/5');
-    } else {
-      mainHeader.classList.remove('bg-[#EDE8D5]/90', 'backdrop-blur-md', 'shadow-sm', 'border-b', 'border-[#231F2A]/5');
-    }
-  }
 
   if (navbarRightMenu) {
     if (currentScroll <= scrollThreshold) {
@@ -184,45 +174,18 @@ const HASH_KEYWORD_MAP = {
   '#contact': 'contact'
 };
 
-let brandTween = null;
-
-function updateNavBrandText(keyword, immediate = false) {
+function updateNavBrandText(keyword) {
   if (!navBrandText || !keyword) return;
   const newText = `en-${keyword}`;
-
-  // If text already matches, ensure opacity is restored if it was stuck
   if (navBrandText.textContent.trim() === newText) {
-    if (navBrandText.style.opacity === '0' || parseFloat(window.getComputedStyle(navBrandText).opacity) < 0.8) {
-      gsap.to(navBrandText, { opacity: 1, y: 0, duration: 0.15 });
-    }
+    if (navBrandText.style.opacity !== '1') navBrandText.style.opacity = '1';
     return;
   }
 
-  if (immediate) {
-    if (brandTween) brandTween.kill();
-    gsap.killTweensOf(navBrandText);
-    navBrandText.textContent = newText;
-    gsap.set(navBrandText, { opacity: 1, y: 0 });
-    return;
-  }
-
-  if (brandTween) brandTween.kill();
-  gsap.killTweensOf(navBrandText);
-
-  brandTween = gsap.timeline();
-  brandTween.to(navBrandText, {
-    opacity: 0,
-    y: -3,
-    duration: 0.1,
-    onComplete: () => {
-      navBrandText.textContent = newText;
-    }
-  }).to(navBrandText, {
-    opacity: 1,
-    y: 0,
-    duration: 0.18,
-    ease: 'power2.out'
-  });
+  // Instant switch with zero delay
+  navBrandText.textContent = newText;
+  navBrandText.style.opacity = '1';
+  navBrandText.style.transform = 'none';
 }
 
 let isNavigating = false;
