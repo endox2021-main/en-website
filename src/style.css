@@ -1,0 +1,267 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --bg-eyetractive: #EDE8D5;
+    --text-dark: #231F2A;
+    --text-muted: #625B68;
+    --border-subtle: #DAD4C2;
+
+    /* Default Theme: Green */
+    --accent-color: #044E35;
+    --accent-hover: #023824;
+    --accent-light: rgba(4, 78, 53, 0.08);
+    --accent-glow: rgba(4, 78, 53, 0.25);
+    --accent-border: rgba(4, 78, 53, 0.15);
+
+    /* Image Corner Radius for en-work (0px = Sharp / Square) */
+    --work-img-radius: 0px;
+  }
+
+  /* Blue Theme (Electric Cobalt Blue) */
+  [data-theme="blue"] {
+    --accent-color: #0052CC;
+    --accent-hover: #003E99;
+    --accent-light: rgba(0, 82, 204, 0.08);
+    --accent-glow: rgba(0, 82, 204, 0.25);
+    --accent-border: rgba(0, 82, 204, 0.15);
+  }
+
+  /* Green Theme (Emerald Dark Green) */
+  [data-theme="green"] {
+    --accent-color: #044E35;
+    --accent-hover: #023824;
+    --accent-light: rgba(4, 78, 53, 0.08);
+    --accent-glow: rgba(4, 78, 53, 0.25);
+    --accent-border: rgba(4, 78, 53, 0.15);
+  }
+
+  /* Purple Theme (Explicit) */
+  [data-theme="purple"] {
+    --accent-color: #7000FF;
+    --accent-hover: #5D00D6;
+    --accent-light: rgba(112, 0, 255, 0.08);
+    --accent-glow: rgba(112, 0, 255, 0.25);
+    --accent-border: rgba(112, 0, 255, 0.15);
+  }
+
+  html {
+    background-color: var(--bg-eyetractive);
+    color: var(--text-dark);
+    font-family: 'Plus Jakarta Sans', 'Noto Sans Thai', sans-serif;
+    scroll-behavior: smooth;
+    overflow-x: hidden;
+  }
+
+  body {
+    background-color: var(--bg-eyetractive);
+    color: var(--text-muted);
+    font-family: 'Plus Jakarta Sans', 'Noto Sans Thai', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  .font-thai {
+    font-family: 'Noto Sans Thai', 'Plus Jakarta Sans', sans-serif;
+  }
+
+
+
+  ::selection {
+    background: var(--accent-light);
+    color: #231F2A;
+  }
+}
+
+
+/* Theme Dynamic Accent Dot Shapes & Hyphen Nodes */
+.purple-dot, .green-dot, .blue-dot, .accent-dot {
+  background-color: var(--accent-color) !important;
+  border-radius: 50%;
+  box-shadow: 0 4px 20px var(--accent-glow) !important;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.text-theme-accent {
+  color: var(--accent-color) !important;
+  transition: color 0.3s ease;
+}
+
+.bg-theme-accent {
+  background-color: var(--accent-color) !important;
+  transition: background-color 0.3s ease;
+}
+
+.bg-theme-light {
+  background-color: var(--accent-light) !important;
+  transition: background-color 0.3s ease;
+}
+
+.border-theme-accent {
+  border-color: var(--accent-color) !important;
+  transition: border-color 0.3s ease;
+}
+
+.border-theme-light {
+  border-color: var(--accent-border) !important;
+  transition: border-color 0.3s ease;
+}
+
+.hover-theme-bg:hover {
+  background-color: var(--accent-hover) !important;
+}
+
+.hover-theme-text:hover {
+  color: var(--accent-color) !important;
+}
+
+/* Interactive Floating Parallax Container */
+.parallax-container {
+  perspective: 1000px;
+}
+
+.parallax-layer {
+  transition: transform 0.15s cubic-bezier(0.1, 1, 0.1, 1);
+}
+
+/* Hamburger Icon Styling */
+.hamburger-line {
+  width: 24px;
+  height: 2px;
+  background-color: var(--text-dark);
+  transition: all 0.3s ease;
+}
+
+/* Lenis Smooth Scroll Styles */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+/* Card & Glass Panels - Seamlessly integrating with #EDE8D5 */
+.ice-panel {
+  position: relative;
+  background: rgba(255, 255, 255, 0.72);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--accent-border);
+  box-shadow: 0 4px 24px rgba(35, 31, 42, 0.04);
+  overflow: hidden;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.ice-panel-hover {
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.ice-panel-hover:hover {
+  background: rgba(255, 255, 255, 0.95);
+  border-color: var(--accent-color);
+  box-shadow: 0 14px 36px var(--accent-glow);
+  transform: translateY(-3px);
+}
+
+
+
+/* Organic Fluid Curving Hyphen Path Animations */
+@keyframes dash-flow {
+  0% { stroke-dashoffset: 400; }
+  100% { stroke-dashoffset: 0; }
+}
+
+@keyframes hyphen-wave {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-8px) rotate(1.5deg); }
+}
+
+@keyframes pulse-node {
+  0%, 100% { transform: scale(1); opacity: 0.9; }
+  50% { transform: scale(1.25); opacity: 1; }
+}
+
+.fluid-hyphen-path {
+  stroke-dasharray: 24 12 120 12;
+  animation: dash-flow 10s infinite linear;
+}
+
+.animate-hyphen-wave {
+  animation: hyphen-wave 6s infinite ease-in-out;
+}
+
+.animate-pulse-node {
+  animation: pulse-node 2.5s infinite ease-in-out;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-eyetractive);
+}
+
+::-webkit-scrollbar-thumb {
+  background: #C7C1AF;
+  border-radius: 4px;
+}
+
+/* en-work Showcase Image Container radius control */
+.en-work-card-img {
+  border-radius: var(--work-img-radius, 0px) !important;
+}
+
+/* Mobile & Touch Device Accessibility: Automatically show hidden project text & badges when hover is unavailable */
+@media (hover: none), (max-width: 1024px) {
+  #showcase [class*="opacity-0"],
+  .work-card-item [class*="opacity-0"],
+  #showcase .opacity-0,
+  .work-card-item .opacity-0 {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+/* Modal Smooth Scrolling & Touch Gesture Interactivity (Direct Content Panel Scroll) */
+#project-modal {
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-y;
+}
+
+#modal-panel-container {
+  max-height: 85vh;
+  overflow-y: auto !important;
+  overscroll-behavior: contain !important;
+  -webkit-overflow-scrolling: touch !important;
+  touch-action: pan-y !important;
+}
+
+#modal-panel-container::-webkit-scrollbar {
+  width: 6px;
+}
+
+#modal-panel-container::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+#modal-panel-container::-webkit-scrollbar-thumb {
+  background: rgba(35, 31, 42, 0.2);
+  border-radius: 9999px;
+}
+
+#modal-panel-container::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-color);
+}
