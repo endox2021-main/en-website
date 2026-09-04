@@ -307,7 +307,7 @@ function hideSections(sections) {
 function handleNavigation(hash) {
   if (!hash) return;
   const cleanHash = hash.startsWith('#') ? hash : `#${hash}`;
-  
+
   isNavigating = true;
   if (navigationTimer) clearTimeout(navigationTimer);
 
@@ -430,7 +430,7 @@ const projectData = {
     headline: 'Transforming live planetary climate telemetry and eco-metrics into a living 360° generative data canvas for Siam Paragon’s iconic spherical landmark.',
     category: 'Creative Technology & Interactive Installation',
     tags: ['#CreativeTechnology', '#DataArt', '#RealTimeVisualization', '#GlobeDisplay', '#Unity', '#InteractiveInstallation', '#PublicArt', '#SiamParagon'],
-    year: '2025 – 2026',
+    year: '2025',
     client: 'Siam Paragon (NEXTOPIA)',
     credits: 'en-prefix, STEP SOLUTION, Small.Good.Studio',
     description: `NEXTOPIA at Siam Paragon was envisioned as a futuristic eco-cultural landmark uniting sustainability, digital innovation, and urban lifestyle. Its centerpiece is "THE GLOBE," an aerial 360-degree spherical LED installation suspended in the central hall. The primary design challenge was to elevate this massive spherical screen beyond a passive video display, turning it into a living, responsive representation of Earth's vital signs—often framed as the planet's seasonal breathing rhythm—while actively reflecting NEXTOPIA's sustainability vision and visitor community engagement.
