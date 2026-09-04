@@ -67,8 +67,32 @@ const drawer = document.getElementById('eyetractive-drawer');
 const menuBtn = document.getElementById('eyetractive-menu-btn');
 const closeDrawerBtn = document.getElementById('close-eyetractive-drawer');
 
+function updateDrawerActiveState(keyword) {
+  const currentKeyword = keyword || (navBrandText ? navBrandText.textContent.replace('en-', '').trim() : 'prefix');
+  const keywordToHash = {
+    'prefix': '#hero',
+    'work': '#showcase',
+    'passionate': '#passionate',
+    'identity': '#identity',
+    'contact': '#atelier-desk'
+  };
+  const targetHash = keywordToHash[currentKeyword] || '#hero';
+
+  document.querySelectorAll('#eyetractive-drawer a').forEach(link => {
+    const href = link.getAttribute('href');
+    if (href === targetHash) {
+      link.classList.add('drawer-active-link');
+      link.classList.remove('text-slate-300');
+    } else {
+      link.classList.remove('drawer-active-link');
+      link.classList.add('text-slate-300');
+    }
+  });
+}
+
 function openDrawer() {
   if (!drawer) return;
+  updateDrawerActiveState();
   drawer.classList.remove('opacity-0', 'pointer-events-none');
   drawer.classList.add('opacity-100', 'pointer-events-auto');
   lenis.stop();
@@ -177,6 +201,7 @@ const HASH_KEYWORD_MAP = {
 function updateNavBrandText(keyword) {
   if (!navBrandText || !keyword) return;
   const newText = `en-${keyword}`;
+  updateDrawerActiveState(keyword);
   if (navBrandText.textContent.trim() === newText) {
     if (navBrandText.style.opacity !== '1') navBrandText.style.opacity = '1';
     return;
@@ -219,6 +244,9 @@ function detectActiveSection() {
     const firstKeyword = visibleSections[0].getAttribute('data-story');
     if (firstKeyword) {
       updateNavBrandText(firstKeyword);
+      if (window.location.hash === '#hero' || window.location.hash === '#story' || window.location.hash === '#prefix') {
+        window.history.replaceState(null, null, window.location.pathname + window.location.search);
+      }
       return;
     }
   }
@@ -268,17 +296,17 @@ function updatePageView(targetHash) {
   const hash = targetHash || window.location.hash || '#hero';
 
   if (hash === '#passionate') {
-    // Dedicated Passionate View: passionate -> contact
-    showSections([sectionPassionate, sectionContact]);
-    hideSections([sectionHero, sectionPartners, sectionShowcase, sectionIdentity]);
+    // Passionate: Include in main flow
+    showSections([sectionHero, sectionPartners, sectionShowcase, sectionPassionate, sectionContact]);
+    hideSections([sectionIdentity]);
   } else if (hash === '#identity') {
     // Dedicated Identity View: identity -> contact
     showSections([sectionIdentity, sectionContact]);
     hideSections([sectionHero, sectionPartners, sectionShowcase, sectionPassionate]);
   } else {
-    // Main Home Flow: hero (prefix) -> partners -> showcase (work) -> contact
-    showSections([sectionHero, sectionPartners, sectionShowcase, sectionContact]);
-    hideSections([sectionPassionate, sectionIdentity]);
+    // Main Home Flow: hero (prefix) -> partners -> showcase (work) -> passionate -> contact
+    showSections([sectionHero, sectionPartners, sectionShowcase, sectionPassionate, sectionContact]);
+    hideSections([sectionIdentity]);
   }
 
   // Immediately update brand text to match active route
@@ -316,10 +344,15 @@ function handleNavigation(hash) {
   let targetId = cleanHash.substring(1);
   if (cleanHash === '#works' || cleanHash === '#work') targetId = 'showcase';
   if (cleanHash === '#contact') targetId = 'atelier-desk';
-  if (cleanHash === '#story' || cleanHash === '#prefix') targetId = 'hero';
+  if (cleanHash === '#story' || cleanHash === '#prefix' || cleanHash === '#hero') targetId = 'hero';
 
   const targetKeyword = HASH_KEYWORD_MAP[cleanHash] || 'prefix';
   updateNavBrandText(targetKeyword, true);
+
+  // Clean URL if target is hero / story / prefix
+  if (cleanHash === '#hero' || cleanHash === '#story' || cleanHash === '#prefix') {
+    window.history.replaceState(null, null, window.location.pathname + window.location.search);
+  }
 
   setTimeout(() => {
     const targetEl = document.getElementById(targetId);
@@ -330,6 +363,9 @@ function handleNavigation(hash) {
         onComplete: () => {
           isNavigating = false;
           detectActiveSection();
+          if (targetId === 'hero') {
+            window.history.replaceState(null, null, window.location.pathname + window.location.search);
+          }
         }
       });
     } else {
@@ -348,22 +384,33 @@ document.querySelectorAll('a[href^="#"]').forEach(link => {
     const targetHash = this.getAttribute('href');
     if (targetHash && targetHash.startsWith('#')) {
       e.preventDefault();
-      window.history.pushState(null, null, targetHash);
-      handleNavigation(targetHash);
+      if (targetHash === '#hero' || targetHash === '#story' || targetHash === '#prefix') {
+        window.history.pushState(null, null, window.location.pathname + window.location.search);
+        handleNavigation('#hero');
+      } else {
+        window.history.pushState(null, null, targetHash);
+        handleNavigation(targetHash);
+      }
     }
   });
 });
 
 // Handle Hash Changes & Browser History Back/Forward
 window.addEventListener('popstate', () => {
-  handleNavigation(window.location.hash || '#hero');
+  const hash = window.location.hash || '#hero';
+  handleNavigation(hash);
 });
 window.addEventListener('hashchange', () => {
-  handleNavigation(window.location.hash || '#hero');
+  const hash = window.location.hash || '#hero';
+  handleNavigation(hash);
 });
 
-// Initialize on page load immediately
-const initialHash = window.location.hash || '#hero';
+// Initialize on page load immediately - strip #hero if present
+const rawHash = window.location.hash;
+if (rawHash === '#hero' || rawHash === '#story' || rawHash === '#prefix') {
+  window.history.replaceState(null, null, window.location.pathname + window.location.search);
+}
+const initialHash = (rawHash && rawHash !== '#hero' && rawHash !== '#story' && rawHash !== '#prefix') ? rawHash : '#hero';
 handleNavigation(initialHash);
 
 // ==========================================

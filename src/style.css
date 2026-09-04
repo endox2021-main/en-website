@@ -265,3 +265,23 @@ html.lenis body {
 #modal-panel-container::-webkit-scrollbar-thumb:hover {
   background: var(--accent-color);
 }
+
+/* Drawer Active Navigation Indicator */
+.drawer-active-link {
+  color: #FFFFFF !important;
+  display: inline-flex !important;
+  align-items: center;
+  position: relative;
+}
+
+.drawer-active-link::before {
+  content: '';
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: var(--accent-color, #044E35);
+  margin-right: 12px;
+  box-shadow: 0 0 10px var(--accent-color, #044E35);
+  flex-shrink: 0;
+}
